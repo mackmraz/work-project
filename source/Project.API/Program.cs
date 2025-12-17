@@ -1,11 +1,16 @@
-
-using Microsoft.OpenApi;
-using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace Project.API
 {
+    /// <summary>
+    /// Entry point for application
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Application entry point
+        /// </summary>
+        /// <param name="args">A list of command line arguments.</param>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -13,18 +18,23 @@ namespace Project.API
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen(options =>
+
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+                string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+
+                string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                options.IncludeXmlComments(xmlPath);
+
             });
+
 
             var app = builder.Build();
 
             app.MapOpenApi();
             app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("v1/swagger.json", "My API V1");
-            });
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 
