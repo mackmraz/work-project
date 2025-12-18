@@ -1,4 +1,5 @@
 using System.Reflection;
+using Project.Infrastructure.Dependencies;
 
 namespace Project.API
 {
@@ -17,6 +18,7 @@ namespace Project.API
 
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
+            builder.Services.RegisterApplication(builder.Configuration);
             builder.Services.AddSwaggerGen(options =>
 
             {
