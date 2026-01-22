@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using Project.Infrastructure;
 using Project.Infrastructure.Sprockets;
 
@@ -9,11 +10,21 @@ namespace Project.API.Controllers
     [Route("sprocket")]
     public class SprocketController : ControllerBase
     {
-        private readonly ApplicationContext _context;
+        private readonly MongoClient _context;
 
-        public SprocketController(ApplicationContext context)
+        public SprocketController(MongoClient context)
         {
             _context = context;
+        }
+
+        [HttpPost]
+        [ProducesResponseType( StatusCodes.Status201Created)]
+        public IActionResult Add()
+        {
+
+            _context.GetDatabase("MyDatabase").GetCollection<Sprocket>(nameof(Sprocket)).InsertOne(new Sprocket(), new InsertOneOptions());
+
+            return Created();
         }
 
         /// <summary>
@@ -21,14 +32,12 @@ namespace Project.API.Controllers
         /// </summary>
         /// <returns>A <see cref="IActionResult"/>.</returns>
         [HttpGet]
-        [ProducesResponseType<string>( StatusCodes.Status200OK)]
+        [ProducesResponseType<List<Sprocket>>( StatusCodes.Status200OK)]
         public IActionResult Get()
         {
+            var result = _context.GetDatabase("MyDatabase").GetCollection<Sprocket>(nameof(Sprocket)).Find(FilterDefinition<Sprocket>.Empty).ToList();
 
-            _context.Sprockets.Add(new Sprocket());
-            _context.SaveChanges();
-
-            return Ok("hello!");
+            return Ok(result);
         }
     }
 }
