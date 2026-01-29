@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using Project.Infrastructure;
 using Project.Infrastructure.Sprockets;
 
 namespace Project.API.Controllers
@@ -18,7 +17,7 @@ namespace Project.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType( StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public IActionResult Add()
         {
 
@@ -32,7 +31,7 @@ namespace Project.API.Controllers
         /// </summary>
         /// <returns>A <see cref="IActionResult"/>.</returns>
         [HttpGet]
-        [ProducesResponseType<List<Sprocket>>( StatusCodes.Status200OK)]
+        [ProducesResponseType<List<Sprocket>>(StatusCodes.Status200OK)]
         public IActionResult Get()
         {
             var result = _context.GetDatabase("MyDatabase").GetCollection<Sprocket>(nameof(Sprocket)).Find(FilterDefinition<Sprocket>.Empty).ToList();

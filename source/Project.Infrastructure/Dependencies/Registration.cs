@@ -17,7 +17,7 @@ namespace Project.Infrastructure.Dependencies
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
-        public static void RegisterApplication(this IServiceCollection services, IConfiguration configuration) 
+        public static void RegisterApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSqlServer<ApplicationContext>(configuration.GetConnectionString("Database"));
             services.AddScoped(_ => new MongoClient(configuration.GetConnectionString("Mongo")));

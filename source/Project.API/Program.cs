@@ -1,5 +1,5 @@
-using System.Reflection;
 using Project.Infrastructure.Dependencies;
+using System.Reflection;
 
 namespace Project.API
 {
